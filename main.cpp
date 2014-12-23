@@ -1,0 +1,34 @@
+#include "walker.h" //walker
+#include "random_walk.h" //Monte Carlo sampling
+#include "random_number.h" //random generator
+#include <cstdlib> //atoi, atof
+#include <iostream> //cout, endl
+
+int main(int argc, const char** argv) {
+    /* main function */
+   
+    if(argc < 5) {
+        std::cout << "USAGE: ./main 'numberWalker' 'time-step' 'total time' 'outputfile name'" 
+            << std::endl;
+    } //end if less
+
+    //aquire parameters as args
+    int numberWalkers = atoi(argv[1]); //number of walkers
+    double dt = atof(argv[2]); //time-step
+    double totalTime = atof(argv[3]); //step-length
+    const char *filename = argv[4]; //name of outputfile
+    
+    double walkProbability = 0.5; //jump probability
+    int maxDistance = 1; int minDistance = 0; //max- and min distance
+
+    //initialize Walker and randoNumber
+    Walker wlk = Walker(numberWalkers, dt, maxDistance, minDistance, walkProbability, totalTime);
+    RandomNumber RN = RandomNumber();
+
+    RandomWalk RW = RandomWalk(&RN, &wlk); //set randomWalk
+    
+    RW.mcSampling(); //start sampling
+    wlk.output(filename); //output to file
+
+    return 0;
+}

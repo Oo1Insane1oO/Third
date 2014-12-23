@@ -1,7 +1,8 @@
 #include "random_walk.h" //header
+#include "walker.h" //header for walker
 #include "random_number.h" //header for random_number
 
-RandomWalk(RandomNumber *mRN, Walker *mwlk) {
+RandomWalk::RandomWalk(RandomNumber *mRN, Walker *mwlk) {
     /* constructor, set objects */
     
     RN = mRN;
@@ -9,7 +10,7 @@ RandomWalk(RandomNumber *mRN, Walker *mwlk) {
 }
 
 void RandomWalk::initialize() {
-    /* initialize result vector */
+    /* initialize result vectors */
     wlk->xProbabilityPosition.assign(wlk->positionSize,0); 
 
     return;
@@ -35,12 +36,12 @@ void RandomWalk::mcSampling() {
             double randomDistNum = RN->ran0(&seed); //random uniformly number
             
             if(randomDistNum<wlk->walkProbability) {
-                xPosition[walker] += l_0;
+                xPosition[walker] += wlk->l_0;
             } else {
-                xPosition[walker] -= l_0;
+                xPosition[walker] -= wlk->l_0;
             } //end random
 
-            int xIndex = (position[walker]-wlk->minDistance)/wlk->l_0 + 0.5;
+            int xIndex = (xPosition[walker]-wlk->minDistance)/wlk->l_0 + 0.5;
             if(xIndex < 0 || xIndex >= wlk->positionSize) { 
                 /* ignore if outside */
                 continue;

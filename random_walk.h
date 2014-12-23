@@ -6,7 +6,6 @@
 
 class RandomWalk {
     public:
-        int n;
         RandomNumber *RN;
         Walker *wlk;
 

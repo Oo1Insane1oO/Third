@@ -20,7 +20,7 @@ class Walker {
 
         Walker(int, double, int, int, double, double);
         
-        void output();
+        void output(const char*);
 };
 
 #endif //WALKER_H
