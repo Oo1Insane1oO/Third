@@ -1,6 +1,6 @@
 #include "walker.h" //header file
 #include <cmath> //sqrt
-#include <fstream> //ofstream
+#include <cstdio> //fopen, fprintf, fclose
 #include <iostream> //cout, endl
 #include <cstdlib> //exit
 
@@ -20,20 +20,20 @@ Walker::Walker(int nw, double mdt, int mad, int mid, double wp, double time) {
 void Walker::output(const char *filename) {
     /* function, output results to file */
 
-    std::ofstream outputfile(filename); //initialize file
+    FILE *outputfile = fopen(filename, "w");
 
-    if(outputfile.is_open()) {
+    if(outputfile) {
         /* check if file is open, else exit */
         for(int i=0; i<positionSize; i++) {
             /* loop through results and write to file */
-            outputfile << xProbabilityPosition[i] << '\n';
+            std::fprintf(outputfile, "%15f %15f \n", i*l_0, xProbabilityPosition[i]);
         } //end for write
     } else {
         std::cout << "error opening file" << std::endl;
         exit(EXIT_FAILURE);
     } //end if is_open
 
-    outputfile.close(); //close file
+    fclose(outputfile); //close file
 
     return;
 } //end function output
