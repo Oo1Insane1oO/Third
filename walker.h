@@ -1,6 +1,8 @@
 #ifndef WALKER_H
 #define WALKER_H
 
+#include <vector>
+
 class Walker {
     public:
         double walkProbability;
@@ -9,18 +11,16 @@ class Walker {
         
         double dt;
         double l_0;
-        double minDistance;
-        double maxDistance;
+        int minDistance;
+        int maxDistance;
         int positionSize;
 
+        //std::vector<std::vector<double> > xyProbabilityPosition;
         std::vector<double> xProbabilityPosition;
-        std::vector<double> yProbabilityPosition;
-        std::vector<double> zProbabilityPosition;
-        
-        RandomNumber *RN;
 
-        Walker(int, double, double, double, double, double, RandomNumber*);
+        Walker(int, double, int, int, double, double);
         
         void output();
 };
+
 #endif //WALKER_H
