@@ -15,12 +15,13 @@ class Walker {
         int maxDistance;
         int positionSize;
 
-        //std::vector<std::vector<double> > xyProbabilityPosition;
         std::vector<double> xProbabilityPosition;
+        std::vector<std::vector<double> > xyProbabilityPosition;
 
         Walker(int, double, int, int, double, double);
         
         void output(const char*);
+        void output2(const char*);
 };
 
 #endif //WALKER_H

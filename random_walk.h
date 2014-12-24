@@ -9,10 +9,13 @@ class RandomWalk {
         RandomNumber *RN;
         Walker *wlk;
 
-        RandomWalk(RandomNumber*, Walker*);
+        int usage;
+
+        RandomWalk(RandomNumber*, Walker*, int);
         
         void initialize();
         void mcSampling();
+        void mcSampling2();
 };
 
 #endif //RANDOM_WALK_H

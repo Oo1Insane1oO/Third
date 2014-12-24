@@ -25,10 +25,18 @@ int main(int argc, const char** argv) {
     Walker wlk = Walker(numberWalkers, dt, maxDistance, minDistance, walkProbability, totalTime);
     RandomNumber RN = RandomNumber();
 
-    RandomWalk RW = RandomWalk(&RN, &wlk); //set randomWalk
-    
-    RW.mcSampling(); //start sampling
-    wlk.output(filename); //output to file
+    int usage = 1;
+    RandomWalk RW = RandomWalk(&RN, &wlk, usage); //set randomWalk
+   
+    if(usage == 1) {
+        RW.mcSampling2(); //start 2D sampling
+        wlk.output2(filename); //output 1D to file
+    } else if(usage == 0) {
+        RW.mcSampling(); //start sampling 1D
+        wlk.output(filename); //output 1D to file
+    } else {
+        std::cout << "specify usage" << std::endl;
+    } //end if usage
 
     return 0;
-}
+} //end function main

@@ -21,7 +21,6 @@ void Walker::output(const char *filename) {
     /* function, output results to file */
 
     FILE *outputfile = fopen(filename, "w");
-
     if(outputfile) {
         /* check if file is open, else exit */
         for(int i=0; i<positionSize; i++) {
@@ -37,3 +36,20 @@ void Walker::output(const char *filename) {
 
     return;
 } //end function output
+
+void Walker::output2(const char *filename) {
+    /* function, output 2D results */
+
+    FILE *outputfile = fopen(filename, "w");
+    std::fprintf(outputfile, "%i\n", positionSize);
+    if(outputfile) {
+        /* check if file is open, else exit */
+        for(int i=0; i<positionSize; i++) {
+            for(int j=0; j<positionSize; j++) {
+                std::fprintf(outputfile, "%15f\n", xyProbabilityPosition[i][j]);
+            } //end for i
+        } //end for j
+    } //end if outputfile
+
+    return;
+} //end function output2
