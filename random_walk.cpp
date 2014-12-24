@@ -32,8 +32,10 @@ void RandomWalk::mcSampling() {
     RandomWalk::initialize(); //initialize probability position vector
     
     //loop over walkers
+    #pragma imp parallel for
     for(int trial=0; trial<=wlk->maxTrials ;trial++) {
         //loop steps
+        #pragma omp parallel for
         for(int walker=0; walker<=wlk->numberWalkers ;walker++) {
             if(xPosition[walker]<wlk->minDistance || xPosition[walker]>wlk->maxDistance) {
                 /* keep walker leashed(boundary) */
@@ -72,22 +74,26 @@ void RandomWalk::mcSampling2() {
     RandomWalk::initialize(); //initialize probability position matrix
     
     //loop over walkers
+    #pragma imp parallel for
     for(int trial=0; trial<=wlk->maxTrials ;trial++) {
-        //loop steps
+        /* loop time-trials */
+        #pragma omp parallel for
         for(int walker=0; walker<=wlk->numberWalkers ;walker++) {
+            /* loop walkers */
             if(xPosition[walker]<wlk->minDistance || xPosition[walker]>wlk->maxDistance) {
                 /* keep x-walker leashed(boundary) */
                 continue;
             } //end x-leashed
-            
+
             if(yPosition[walker]<wlk->minDistance || yPosition[walker]>wlk->maxDistance) {
                 /* keep y-walker leashed(boundary) */
                 continue;
             } //end y-leashed
 
             double randomDistNum = 2*RN->ran0(&seed); //random uniformly number
-            
+          
             if(randomDistNum<=wlk->walkProbability) {
+                /* make jumps */
                 xPosition[walker] += wlk->l_0;
             } else if(randomDistNum<=2*wlk->walkProbability) {
                 xPosition[walker] -= wlk->l_0;
@@ -95,7 +101,7 @@ void RandomWalk::mcSampling2() {
                 yPosition[walker] += wlk->l_0;
             } else {
                 yPosition[walker] -= wlk->l_0;
-            } //end random
+            } //end jumps
 
             int xIndex = (xPosition[walker]-wlk->minDistance)/wlk->l_0 + 0.5;
             if(xIndex < 0 || xIndex >= wlk->positionSize) { 
@@ -109,10 +115,9 @@ void RandomWalk::mcSampling2() {
                 continue;
             } //end if y-index
 
-            //update cumulative positions
-            wlk->xyProbabilityPosition[xIndex][yIndex] += 1;
-        } //end walker
-    } //end trial
+            wlk->xyProbabilityPosition[xIndex][yIndex] += 1; //update position grid
+        } //end walkers
+    } //end time-trial
 
     return;
-} //end function mcSampling
+} //end function mcSampling2

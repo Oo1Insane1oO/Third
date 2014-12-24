@@ -3,12 +3,13 @@
 #include "random_number.h" //random generator
 #include <cstdlib> //atoi, atof
 #include <iostream> //cout, endl
+#include <chrono> // timer(high_precision_clock)
 
 int main(int argc, const char** argv) {
     /* main function */
    
     if(argc < 5) {
-        std::cout << "USAGE: ./main 'numberWalker' 'time-step' 'total time' 'outputfile name'" 
+        std::cout << "USAGE: ./main 'numberWalker' 'time-step' 'total time' 'outputfile name' 'usage'" 
             << std::endl;
     } //end if less
 
@@ -25,11 +26,22 @@ int main(int argc, const char** argv) {
     Walker wlk = Walker(numberWalkers, dt, maxDistance, minDistance, walkProbability, totalTime);
     RandomNumber RN = RandomNumber();
 
-    int usage = 1;
+    int usage = atoi(argv[5]);
     RandomWalk RW = RandomWalk(&RN, &wlk, usage); //set randomWalk
    
     if(usage == 1) {
+        //auto start = std::chrono::high_resolution_clock::now(); //start clock
+        
         RW.mcSampling2(); //start 2D sampling
+        
+        /*
+        auto finish = std::chrono::high_resolution_clock::now(); //end clock 
+        std::cout << "time sampling 2D:"
+            << std::chrono::duration_cast<std::chrono::seconds>(finish - start).count() << "s" 
+            << std::endl; //print time
+        std::cout << "\n"; //space
+        */
+
         wlk.output2(filename); //output 1D to file
     } else if(usage == 0) {
         RW.mcSampling(); //start sampling 1D
