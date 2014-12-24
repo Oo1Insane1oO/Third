@@ -6,12 +6,13 @@
 
 class RandomWalk {
     public:
-        RandomNumber *RN;
+        //RandomNumber *RN;
         Walker *wlk;
+        RandomNumber RN;
 
         int usage;
 
-        RandomWalk(RandomNumber*, Walker*, int);
+        RandomWalk(Walker*, int);
         
         void initialize();
         void mcSampling();

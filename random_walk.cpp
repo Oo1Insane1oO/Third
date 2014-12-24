@@ -1,13 +1,12 @@
 #include "random_walk.h" //header
 #include "walker.h" //header for walker
-#include "random_number.h" //header for random_number
 #include <iostream> //cout, endl
 
-RandomWalk::RandomWalk(RandomNumber *mRN, Walker *mwlk, int use) {
+RandomWalk::RandomWalk(Walker *mwlk, int use) {
     /* constructor, set objects */
-    usage = use;
-    RN = mRN;
-    wlk = mwlk;
+    usage = use; //2D or 1D test object
+    wlk = mwlk; //object Walker
+    RN = RandomNumber(); //object RandomNumber
 }
 
 void RandomWalk::initialize() {
@@ -42,9 +41,10 @@ void RandomWalk::mcSampling() {
                 continue;
             } //end leashed
 
-            double randomDistNum = RN->ran0(&seed); //random uniformly number
+            double randomDistNum = RN.ran0(&seed); //random uniformly number
             
             if(randomDistNum<wlk->walkProbability) {
+                /* make jumps */
                 xPosition[walker] += wlk->l_0;
             } else {
                 xPosition[walker] -= wlk->l_0;
@@ -56,8 +56,7 @@ void RandomWalk::mcSampling() {
                 continue;
             } //end if x-index
 
-            //update cumulative positions
-            wlk->xProbabilityPosition[xIndex] += 1;
+            wlk->xProbabilityPosition[xIndex] += 1; //update concentration
         } //end walker
     } //end trial
 
@@ -86,7 +85,7 @@ void RandomWalk::mcSampling2() {
                 continue;
             } //end leashed
 
-            double randomDistNum = 2*RN->ran0(&seed); //random uniformly number
+            double randomDistNum = 2*RN.ran0(&seed); //random number from uniform distribution
           
             if(randomDistNum<=wlk->walkProbability) {
                 /* make jumps */
@@ -99,10 +98,10 @@ void RandomWalk::mcSampling2() {
                 yPosition[walker] -= wlk->l_0;
             } //end jumps
 
-            int xIndex = (xPosition[walker]-wlk->minDistance)/wlk->l_0 + 0.5;
-            int yIndex = (yPosition[walker]-wlk->minDistance)/wlk->l_0 + 0.5;
+            int xIndex = (xPosition[walker]-wlk->minDistance)/wlk->l_0 + 0.5; //create x-index of moved
+            int yIndex = (yPosition[walker]-wlk->minDistance)/wlk->l_0 + 0.5; //create y-index of moved
             if(xIndex<0 || xIndex>=wlk->positionSize || yIndex<0 || yIndex>=wlk->positionSize) { 
-                /* ignore if outside */
+                /* ignore deserters(walkers outside of boundary) */
                 continue;
             } //end if index
 

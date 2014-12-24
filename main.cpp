@@ -22,12 +22,11 @@ int main(int argc, const char** argv) {
     double walkProbability = 0.5; //jump probability
     int maxDistance = 1; int minDistance = 0; //max- and min distance
 
-    //initialize Walker and randoNumber
+    //initialize Walker
     Walker wlk = Walker(numberWalkers, dt, maxDistance, minDistance, walkProbability, totalTime);
-    RandomNumber RN = RandomNumber();
 
     int usage = atoi(argv[5]);
-    RandomWalk RW = RandomWalk(&RN, &wlk, usage); //set randomWalk
+    RandomWalk RW = RandomWalk(&wlk, usage); //set randomWalk
    
     if(usage == 1) {
         auto start = std::chrono::high_resolution_clock::now(); //start clock
