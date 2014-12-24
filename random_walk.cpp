@@ -69,26 +69,22 @@ void RandomWalk::mcSampling2() {
     
     long seed = -1; //seed for random
     std::vector<double> xPosition (wlk->numberWalkers,0); //x-position vector
-    std::vector<double> yPosition (wlk->numberWalkers,0); //x-position vector
+    std::vector<double> yPosition (wlk->numberWalkers,0); //y-position vector
     
     RandomWalk::initialize(); //initialize probability position matrix
     
     //loop over walkers
-    #pragma imp parallel for
+    #pragma omp parallel for
     for(int trial=0; trial<=wlk->maxTrials ;trial++) {
         /* loop time-trials */
         #pragma omp parallel for
         for(int walker=0; walker<=wlk->numberWalkers ;walker++) {
             /* loop walkers */
-            if(xPosition[walker]<wlk->minDistance || xPosition[walker]>wlk->maxDistance) {
-                /* keep x-walker leashed(boundary) */
+            if(xPosition[walker]<wlk->minDistance || xPosition[walker]>wlk->maxDistance || 
+                    yPosition[walker]<wlk->minDistance || yPosition[walker]>wlk->maxDistance) {
+                /* keep walker leashed(boundary) */
                 continue;
-            } //end x-leashed
-
-            if(yPosition[walker]<wlk->minDistance || yPosition[walker]>wlk->maxDistance) {
-                /* keep y-walker leashed(boundary) */
-                continue;
-            } //end y-leashed
+            } //end leashed
 
             double randomDistNum = 2*RN->ran0(&seed); //random uniformly number
           
@@ -104,16 +100,11 @@ void RandomWalk::mcSampling2() {
             } //end jumps
 
             int xIndex = (xPosition[walker]-wlk->minDistance)/wlk->l_0 + 0.5;
-            if(xIndex < 0 || xIndex >= wlk->positionSize) { 
-                /* ignore if x outside */
-                continue;
-            } //end if x-index
-
             int yIndex = (yPosition[walker]-wlk->minDistance)/wlk->l_0 + 0.5;
-            if(yIndex < 0 || yIndex >= wlk->positionSize) { 
-                /* ignore if y outside */
+            if(xIndex<0 || xIndex>=wlk->positionSize || yIndex<0 || yIndex>=wlk->positionSize) { 
+                /* ignore if outside */
                 continue;
-            } //end if y-index
+            } //end if index
 
             wlk->xyProbabilityPosition[xIndex][yIndex] += 1; //update position grid
         } //end walkers

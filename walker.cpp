@@ -23,6 +23,7 @@ void Walker::output(const char *filename) {
     FILE *outputfile = fopen(filename, "w");
     if(outputfile) {
         /* check if file is open, else exit */
+        #pragma omp parallel for
         for(int i=0; i<positionSize; i++) {
             /* loop through results and write to file */
             std::fprintf(outputfile, "%15f %15f \n", i*l_0, xProbabilityPosition[i]);
