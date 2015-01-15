@@ -34,7 +34,7 @@ int main(int argc, const char** argv) {
         RW.mcSampling2(); //start 2D sampling
         
         auto finish = std::chrono::high_resolution_clock::now(); //end clock 
-        std::cout << "time sampling 2D:"
+        std::cout << "time sampling 2D: "
             << std::chrono::duration_cast<std::chrono::seconds>(finish - start).count() << "s" 
             << std::endl; //print time
         std::cout << "\n"; //space
