@@ -17,12 +17,21 @@ filename = filename.reshape(len(filename))
 results = zeros((n,n))
 for i in range(n-1):
     """loop through and normalize each column"""
-    if max(filename[n*i:n*(i+1)]) == 0: continue #ignore columns of zero to avoid division by zero
-    results[:,i] = filename[n*i:n*(i+1)]/max(filename[n*i:n*(i+1)])
+    #if max(filename[n*i:n*(i+1)]) == 0: continue #ignore columns of zero to avoid division by zero
+    results[:,i] = filename[n*i:n*(i+1)]/max(abs(filename[n*i:n*(i+1)]))
 
 x = linspace(0,1,n) #arbitary x-values
 xi,yi = meshgrid(x,x); #create square grid
 
-pcolor(xi,yi,results) #gradient plot
-cb = colorbar() #show colorbar
+#pcolor(xi,yi,results) #gradient plot
+#cb = colorbar() #show colorbar
+
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+
+surf = ax.plot_surface(xi,yi,results, rstride=1, cstride=1, facecolors=cm.jet(results), linewidth=0, antialiased=False)
 show() #show figure
