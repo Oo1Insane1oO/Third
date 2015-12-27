@@ -1,6 +1,8 @@
 #include "random_walk.h" //header
 #include "walker.h" //header for walker
 #include <iostream> //cout, endl
+#include <string> //string
+#include <cstring> //strcopy
 
 RandomWalk::RandomWalk(Walker *mwlk, int use) {
     /* constructor, set objects */
@@ -65,6 +67,9 @@ void RandomWalk::mcSampling() {
 
 void RandomWalk::mcSampling2() {
     /* function, Monte Carlo sampling 2D*/
+
+    std::string fileBuf;
+    char *filename;
     
     long seed = -1; //seed for random
     std::vector<double> xPosition (wlk->numberWalkers,0); //x-position vector
@@ -73,9 +78,16 @@ void RandomWalk::mcSampling2() {
     RandomWalk::initialize(); //initialize probability position matrix
     
     //loop over walkers
-    #pragma omp parallel for
+//     #pragma omp parallel for // commented out since we write to file (I really need to learn openmpi...)
     for(int trial=0; trial<=wlk->maxTrials ;trial++) {
         /* loop time-trials */
+
+        // create filename
+        fileBuf = "tmpData/data";
+        fileBuf += std::to_string(trial);
+        char *tempFilename = new char[fileBuf.length() + 1];
+        filename = std::strcpy(tempFilename, fileBuf.c_str() );
+
         #pragma omp parallel for
         for(int walker=0; walker<=wlk->numberWalkers ;walker++) {
             /* loop walkers */
@@ -107,6 +119,7 @@ void RandomWalk::mcSampling2() {
 
             wlk->xyProbabilityPosition[xIndex][yIndex] += 1; //update position grid
         } //end walkers
+        wlk->output2(filename); // output data to file filename
     } //end time-trial
 
     return;

@@ -3,6 +3,7 @@
 #include <cstdio> //fopen, fprintf, fclose
 #include <iostream> //cout, endl
 #include <cstdlib> //exit
+#include <algorithm> //max_element
 
 Walker::Walker(int nw, double mdt, int mad, int mid, double wp, double time) {
     /* constructor, set parameters */
@@ -15,7 +16,24 @@ Walker::Walker(int nw, double mdt, int mad, int mid, double wp, double time) {
     maxTrials = int (time/dt + 0.5); //number of trials(time iterations)
     l_0 = std::sqrt(2*dt); //step-length as defined
     positionSize = (maxDistance-minDistance)/l_0 + 1; //size of position vector
-}
+} // end constructor
+
+void Walker::normalizer2() {
+    /* function for normalizing columns */
+
+    for (int i=0; i<positionSize; i++) {
+        std::vector<double>::iterator maxValue;
+        maxValue = std::max_element(xyProbabilityPosition[i].begin(), xyProbabilityPosition[i].end() );
+        if (*maxValue == 0) {
+            continue;
+        } // end if maxValue
+        for (int j=0; j<positionSize ;j++) {
+            xyProbabilityPosition[i][j] = xyProbabilityPosition[i][j] / *maxValue;
+        } // end for j
+    } // end for positionSize
+
+    return;
+} // end function normalizer
 
 void Walker::output(const char *filename) {
     /* function, output results to file */
@@ -41,6 +59,8 @@ void Walker::output(const char *filename) {
 void Walker::output2(const char *filename) {
     /* function, output 2D results */
 
+    normalizer2(); // normalize before output
+
     FILE *outputfile = fopen(filename, "w");
     std::fprintf(outputfile, "%i\n", positionSize);
     if(outputfile) {
@@ -52,5 +72,6 @@ void Walker::output2(const char *filename) {
         } //end for j
     } //end if outputfile
 
+    std::fclose(outputfile); //close file
     return;
 } //end function output2

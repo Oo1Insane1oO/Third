@@ -39,7 +39,7 @@ int main(int argc, const char** argv) {
             << std::endl; //print time
         std::cout << "\n"; //space
 
-        wlk.output2(filename); //output 1D to file
+//         wlk.output2(filename); //output 1D to file
     } else if(usage == 0) {
         RW.mcSampling(); //start sampling 1D
         wlk.output(filename); //output 1D to file

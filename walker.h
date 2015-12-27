@@ -19,7 +19,8 @@ class Walker {
         std::vector<std::vector<double> > xyProbabilityPosition;
 
         Walker(int, double, int, int, double, double);
-        
+       
+        void normalizer2();
         void output(const char*);
         void output2(const char*);
 };

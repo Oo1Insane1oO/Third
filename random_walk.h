@@ -1,6 +1,5 @@
 #ifndef RANDOM_WALK_H
-#define RANDOM_WALK_H
-
+#define RANDOM_WALK_H 
 #include "walker.h"
 #include "random_number.h"
 
