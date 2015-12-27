@@ -7,27 +7,25 @@ fpath = "tmpData/" # tempfiles directory
 # find n from first file
 initialData = np.fromfile(fpath + "data0", sep = " ")
 initialData = initialData.reshape(len(initialData) / 1., 1)
-n = initialData[0]
+n = int(initialData[0])
 initialData = initialData[1:]
 initialData = initialData.reshape(len(initialData) )
 
-for i in range(n-1):
-    """loop through and normalize each column"""
-    if np.max(initialData[n*i:n*(i+1)]) == 0: continue #ignore columns of zero to avoid division by zero
-    InitialData[:,i] = initialData[n*i:n*(i+1)] / np.max(np.abs(initialData[n*i:n*(i+1)]) )
-
-foo
+tempInitialData = np.zeros((n,n) )
+for i in xrange(n-1):
+    tempInitialData[:,i] = initialData[n*i:n*(i+1)]
+initialData = tempInitialData
 
 x = np.linspace(0,1,n) #arbitary x-values
 xi,yi = np.meshgrid(x,x); #create square grid
 
 #initialize plots, set background color
-fig, ax = plt.subplots(2,1)
-ax = ax.ravel()
-
-im = ax[0].imshow(initialData,  interpolation="nearest", origin="bottom",
-                                vmin=np.min(initialData), vmax=np.max(initialData),
-                                cmap="jet")
+fig = plt.figure(); ax = fig.add_subplot(111)
+ax.set_axis_bgcolor("white")
+pc = plt.pcolor(xi,yi, initialData)
+#initialize backgrounds, draw canvas
+bg = fig.canvas.copy_from_bbox(ax.bbox)
+fig.canvas.draw()
 
 # loop til files end
 c = 1
@@ -44,4 +42,16 @@ while True:
     tempData = tempData[1:]
     tempData = tempData.reshape(len(tempData) )
 
+    fig.canvas.restore_region(bg)
+    myCmap = plt.get_cmap('jet')
+    newColor = myCmap(tempData.T.ravel() )
+    pc.update({'facecolors':newColor})
+    plt.draw()
+
+    #update and clear(flush) figure canvas
+    fig.canvas.update(); fig.canvas.flush_events()
+
+    plt.show(block=False)
+
     c += 1
+    print c
