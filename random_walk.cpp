@@ -79,14 +79,9 @@ void RandomWalk::mcSampling2() {
     
     //loop over walkers
 //     #pragma omp parallel for // commented out since we write to file (I really need to learn openmpi...)
+    int jumpCount = 0;
     for(int trial=0; trial<=wlk->maxTrials ;trial++) {
         /* loop time-trials */
-
-        // create filename
-        fileBuf = "tmpData/data";
-        fileBuf += std::to_string(trial);
-        char *tempFilename = new char[fileBuf.length() + 1];
-        filename = std::strcpy(tempFilename, fileBuf.c_str() );
 
         #pragma omp parallel for
         for(int walker=0; walker<=wlk->numberWalkers ;walker++) {
@@ -119,7 +114,24 @@ void RandomWalk::mcSampling2() {
 
             wlk->xyProbabilityPosition[xIndex][yIndex] += 1; //update position grid
         } //end walkers
-        wlk->output2(filename); // output data to file filename
+
+        if(jumpCount == 1000) {
+            /* write every 1000 */
+
+            // create filename
+            fileBuf = "tmpData/data";
+            fileBuf += std::to_string(trial);
+            char *tempFilename = new char[fileBuf.length() + 1];
+            filename = std::strcpy(tempFilename, fileBuf.c_str() );
+
+            // write to file
+            wlk->output2(filename); // output data to file filename
+
+            // reset jumpCount
+            jumpCount = 0;
+        } // end if jumpCount
+
+        jumpCount += 1;
     } //end time-trial
 
     return;

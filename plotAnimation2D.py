@@ -47,7 +47,8 @@ while True:
     myCmap = plt.get_cmap('jet')
     newColor = myCmap(tempData.T.ravel() )
     pc.update({'facecolors':newColor})
-    plt.draw()
+#     plt.draw()
+    fig.canvas.draw()
 
     #update and clear(flush) figure canvas
     fig.canvas.update(); fig.canvas.flush_events()
