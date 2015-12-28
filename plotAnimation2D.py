@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys, os
 
+jump = int(sys.argv[1])
 fpath = "tmpData/" # tempfiles directory
 
 # find n from first file
@@ -53,5 +54,7 @@ while True:
 
     plt.show(block=False)
 
-    c += 1
+    c += jump
     print c
+
+plt.show()

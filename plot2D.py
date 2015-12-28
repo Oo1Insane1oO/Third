@@ -24,16 +24,9 @@ for i in range(n-1):
 x = np.linspace(0,1,n) #arbitary x-values
 xi,yi = np.meshgrid(x,x); #create square grid
 
-#initialize plots, set background color
-fig = plt.figure(); ax = fig.add_subplot(111)
-ax.set_axis_bgcolor("white")
-cb = colorbar() #show colorbar
-lines, = pcolor(xi,yi,results) #gradient plot
-
-#receive data, set plot data(axes, label, limits) and lines
-fsize = 14
-
-show()
+plt.pcolor(xi,yi,results)
+cb = plt.colorbar() #show colorbar
+plt.show()
 
 # from mpl_toolkits.mplot3d import Axes3D
 # from matplotlib import cm
