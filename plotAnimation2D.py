@@ -29,7 +29,7 @@ bg = fig.canvas.copy_from_bbox(ax.bbox)
 fig.canvas.draw()
 
 # loop til files end
-c = 1
+c = jump
 while True:
     filename = "data" + str(c)
     if os.path.exists(fpath+filename) == False:
@@ -56,6 +56,5 @@ while True:
     plt.show(block=False)
 
     c += jump
-    print c
 
 plt.show()
