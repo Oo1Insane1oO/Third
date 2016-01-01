@@ -116,7 +116,7 @@ void RandomWalk::mcSampling2() {
         } //end walkers
 
         if(jumpCount == 10 || jumpCount == 0) {
-            /* write every 10000 */
+            /* write every 10 */
 
             // create filename
             fileBuf = "tmpData/data";

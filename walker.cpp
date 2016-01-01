@@ -21,6 +21,14 @@ Walker::Walker(int nw, double mdt, int mad, int mid, double wp, double time) {
 void Walker::normalizer2() {
     /* function for normalizing columns */
 
+    // make a copy 
+    xyProbabilityPositionTempCopy.resize(positionSize, std::vector<double>(positionSize) );
+    for(int i=0; i<positionSize ;i++) {
+        /* assign values to copy vector */
+        xyProbabilityPositionTempCopy[i] = xyProbabilityPosition[i];
+    } // end for i<positionSize
+
+    // normalize original
     for (int i=0; i<positionSize; i++) {
         std::vector<double>::iterator maxValue;
         maxValue = std::max_element(xyProbabilityPosition[i].begin(), xyProbabilityPosition[i].end() );
@@ -30,7 +38,7 @@ void Walker::normalizer2() {
         for (int j=0; j<positionSize ;j++) {
             xyProbabilityPosition[i][j] = xyProbabilityPosition[i][j] / *maxValue;
         } // end for j
-    } // end for positionSize
+    } // end for i positionSize
 
     return;
 } // end function normalizer
@@ -59,7 +67,7 @@ void Walker::output(const char *filename) {
 void Walker::output2(const char *filename) {
     /* function, output 2D results */
 
-//     normalizer2(); // normalize before output
+    Walker::normalizer2(); // normalize before output
 
     FILE *outputfile = fopen(filename, "w");
     std::fprintf(outputfile, "%i\n", positionSize);
@@ -73,5 +81,10 @@ void Walker::output2(const char *filename) {
     } //end if outputfile
 
     std::fclose(outputfile); //close file
+    for (int i = 0; i < positionSize; i++) {
+        /* reset to unnormalized */
+        xyProbabilityPosition[i] = xyProbabilityPositionTempCopy[i];
+    }
+
     return;
 } //end function output2

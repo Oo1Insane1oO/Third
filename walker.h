@@ -17,6 +17,7 @@ class Walker {
 
         std::vector<double> xProbabilityPosition;
         std::vector<std::vector<double> > xyProbabilityPosition;
+        std::vector<std::vector<double> > xyProbabilityPositionTempCopy;
 
         Walker(int, double, int, int, double, double);
        
