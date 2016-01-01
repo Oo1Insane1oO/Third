@@ -18,8 +18,8 @@ filename = filename.reshape(len(filename) )
 results = np.zeros((n,n) )
 for i in range(n-1):
     """loop through and normalize each column"""
-    if max(filename[n*i:n*(i+1)]) == 0: continue #ignore columns of zero to avoid division by zero
-    results[:,i] = filename[n*i:n*(i+1)] / np.max(np.abs(filename[n*i:n*(i+1)]) )
+#     if max(filename[n*i:n*(i+1)]) == 0: continue #ignore columns of zero to avoid division by zero
+    results[:,i] = filename[n*i:n*(i+1)] #/ np.max(np.abs(filename[n*i:n*(i+1)]) )
 
 x = np.linspace(0,1,n) #arbitary x-values
 xi,yi = np.meshgrid(x,x); #create square grid

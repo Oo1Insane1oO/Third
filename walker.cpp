@@ -59,7 +59,7 @@ void Walker::output(const char *filename) {
 void Walker::output2(const char *filename) {
     /* function, output 2D results */
 
-    normalizer2(); // normalize before output
+//     normalizer2(); // normalize before output
 
     FILE *outputfile = fopen(filename, "w");
     std::fprintf(outputfile, "%i\n", positionSize);
