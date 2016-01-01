@@ -1,5 +1,5 @@
 #include "walker.h" //header file
-#include <cmath> //sqrt
+#include <cmath> //sqrt, fabs
 #include <cstdio> //fopen, fprintf, fclose
 #include <iostream> //cout, endl
 #include <cstdlib> //exit
@@ -23,25 +23,28 @@ void Walker::normalizer2() {
 
     // make a copy 
     xyProbabilityPositionTempCopy.resize(positionSize, std::vector<double>(positionSize) );
+    #pragma omp parallel for
     for(int i=0; i<positionSize ;i++) {
         /* assign values to copy vector */
         xyProbabilityPositionTempCopy[i] = xyProbabilityPosition[i];
     } // end for i<positionSize
 
     // normalize original
+    double eps = 1e-10;
+    double maxValue;
     for (int i=0; i<positionSize; i++) {
-        std::vector<double>::iterator maxValue;
-        maxValue = std::max_element(xyProbabilityPosition[i].begin(), xyProbabilityPosition[i].end() );
-        if (*maxValue == 0) {
+        maxValue = *std::max_element(xyProbabilityPosition[i].begin(), xyProbabilityPosition[i].end() );
+        if (maxValue <= eps) {
+            /* ignore zero (assume all values are positive) */
             continue;
         } // end if maxValue
         for (int j=0; j<positionSize ;j++) {
-            xyProbabilityPosition[i][j] = xyProbabilityPosition[i][j] / *maxValue;
+            xyProbabilityPosition[i][j] = xyProbabilityPosition[i][j] / maxValue;
         } // end for j
     } // end for i positionSize
 
     return;
-} // end function normalizer
+} // end function normalizer2
 
 void Walker::output(const char *filename) {
     /* function, output results to file */
@@ -85,6 +88,8 @@ void Walker::output2(const char *filename) {
         /* reset to unnormalized */
         xyProbabilityPosition[i] = xyProbabilityPositionTempCopy[i];
     }
+
+    xyProbabilityPositionTempCopy.clear(); // clear temp vector
 
     return;
 } //end function output2

@@ -115,7 +115,7 @@ void RandomWalk::mcSampling2() {
             wlk->xyProbabilityPosition[xIndex][yIndex] += 1; //update position grid
         } //end walkers
 
-        if(jumpCount == 10 || jumpCount == 0) {
+        if(jumpCount == 100 || jumpCount == 0) {
             /* write every 10 */
 
             // create filename
