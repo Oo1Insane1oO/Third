@@ -38,6 +38,8 @@ fig.canvas.draw()
 
 # loop until files end
 c = jump
+# show without block
+plt.show(block=False)
 while True:
     # set file and check for ending (last file)
     filename = "data" + str(c)
@@ -55,10 +57,7 @@ while True:
     fig.canvas.restore_region(bg)
     im.set_data(tempData)
     ax.draw_artist(im)
-   
-    # show without block
-    plt.show(block=False)
-
+    
     # update and clear(flush) figure canvas
     fig.canvas.update(); fig.canvas.flush_events()
 
