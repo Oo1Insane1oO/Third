@@ -28,7 +28,7 @@ x = np.linspace(0,1,n) #arbitary x-values
 xi,yi = np.meshgrid(x,x); #create square grid
 
 #initialize plots, set background color
-fig = plt.figure(); ax = fig.add_subplot(111)
+fig = plt.figure(figsize=(50,50)); ax = fig.add_subplot(111)
 ax.set_axis_bgcolor("blue")
 im = plt.imshow(initialData, interpolation="nearest", origin="bottom", aspect="auto", cmap="jet")
 cb = plt.colorbar(im)
